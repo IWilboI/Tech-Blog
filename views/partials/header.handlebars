@@ -1,0 +1,9 @@
+<header>
+    <h1>CMS Blog</h1>
+    {{#if this.userId}}
+        <p>Welcome, {{this.userId}}! <a href="/api/users/logout">Logout</a></p>
+    {{else}}
+        <a href="/login">Login</a>
+        <a href="/signup">Signup</a>
+    {{/if}}
+</header>

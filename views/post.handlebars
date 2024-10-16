@@ -1,14 +1,16 @@
-<h1>{{post.title}}</h1>
-<p>{{post.content}}</p>
-<p>By {{post.user.username}} on {{post.createdAt}}</p>
-
-{{#if logged_in}}
-  <form id="comment-form">
-    <textarea id="comment-content"></textarea>
-    <button type="submit">Submit</button>
-  </form>
-{{/if}}
-
-{{#each post.comments}}
-  <p>{{this.user.username}}: {{this.content}} ({{this.createdAt}})</p>
-{{/each}}
+{{> header}}
+<main>
+    <h2>{{post.title}}</h2>
+    <p>{{post.content}}</p>
+    <h3>Comments</h3>
+    <ul>
+        {{#each comments}}
+            <li>{{this.content}}</li>
+        {{/each}}
+    </ul>
+    <form action="/api/blogs/post/{{post.id}}/comment" method="POST">
+        <textarea name="content" placeholder="Add a comment" required></textarea>
+        <button type="submit">Comment</button>
+    </form>
+</main>
+{{> footer}}

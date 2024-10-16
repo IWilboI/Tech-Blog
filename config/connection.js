@@ -1,20 +1,26 @@
-// models/connection.js
 const { Sequelize } = require('sequelize');
-require('dotenv').config(); // Ensure you have dotenv to load environment variables
 
-// Create a new instance of Sequelize
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: 'localhost', // Change this if your database is hosted elsewhere
-  dialect: 'postgres', // Use 'mysql', 'sqlite', etc., if you're using a different DB
+// Initialize Sequelize with the database connection
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true, // This enables SSL
+      rejectUnauthorized: false, // This is necessary for some cloud providers
+    },
+  },
 });
 
-// Test the connection
-sequelize.authenticate()
-  .then(() => {
+// Test the database connection
+const testConnection = async () => {
+  try {
+    await sequelize.authenticate();
     console.log('Connection to the database has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+};
+
+testConnection();
 
 module.exports = sequelize;

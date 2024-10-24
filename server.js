@@ -1,40 +1,31 @@
-// Import required modules
 const express = require('express');
-const exphbs = require('express-handlebars').engine; // Ensure you are using the .engine method
-const session = require('express-session');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const connection = require('./config/connection'); // Correct path to connection.js
-const routes = require('./routes'); // Adjust if necessary
+const { engine } = require('express-handlebars'); // Updated import statement
+const session = require('express-session'); // If using sessions
+const routes = require('./routes'); // Ensure this path is correct
+const sequelize = require('./config/connection'); // Update based on your actual connection file
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Set up Handlebars
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
+
+
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Set up session
-const sess = {
-    secret: 'your_secret_key', // Replace with your own secret
-    cookie: {},
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({
-        db: connection, // Sequelize connection
-    }),
-};
+app.use(express.static('public')); // This serves static files from the public directory
 
-app.use(session(sess));
-
-// Sync database and start the server
-connection.sync({ force: false }).then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
-    });
-});
+// Handlebars setup
+app.engine('handlebars', engine()); // Updated line for setting up Handlebars
+app.set('view engine', 'handlebars');
 
 // Use routes
 app.use(routes);
+
+// Sync Sequelize models and start server
+sequelize.sync({ force: false }).then(() => {
+    app.listen(PORT, () => {
+        console.log(`Now listening on http://localhost:${PORT}`);
+    });
+});

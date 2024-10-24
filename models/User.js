@@ -7,34 +7,27 @@ User.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
     },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
   },
-  {
-    sequelize,
-    modelName: 'User',
-    tableName: 'users', // Make sure this matches your table name
-    timestamps: true, // This adds createdAt and updatedAt fields
-  }
+  { sequelize, timestamps: false, freezeTableName: true, modelName: 'user' }
 );
 
 module.exports = User;

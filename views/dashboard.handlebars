@@ -1,16 +1,10 @@
-{{> header}}
-<main>
-    <h2>Your Posts</h2>
-    <ul>
-        {{#each posts}}
-            <li><a href="/post/{{this.id}}">{{this.title}}</a></li>
-        {{/each}}
-    </ul>
-    <h2>Create a New Post</h2>
-    <form action="/api/blogs/create" method="POST">
-        <input type="text" name="title" placeholder="Post Title" required>
-        <textarea name="content" placeholder="Post Content" required></textarea>
-        <button type="submit">Create Post</button>
-    </form>
-</main>
-{{> footer}}
+<h1>Your Dashboard</h1>
+<a href="/new-post">Create New Post</a>
+<h2>Your Posts</h2>
+{{#each posts}}
+    <div>
+        <h2>{{this.title}}</h2>
+        <a href="/edit-post/{{this.id}}">Edit</a>
+        <a href="/delete-post/{{this.id}}">Delete</a>
+    </div>
+{{/each}}

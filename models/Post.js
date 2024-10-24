@@ -7,8 +7,8 @@ Post.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       autoIncrement: true,
+      primaryKey: true,
     },
     title: {
       type: DataTypes.STRING,
@@ -26,7 +26,10 @@ Post.init(
       },
     },
   },
-  { sequelize, timestamps: true, freezeTableName: true, modelName: 'post' }
+  {
+    sequelize,
+    modelName: 'post',
+  }
 );
 
 module.exports = Post;
